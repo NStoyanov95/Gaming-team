@@ -1,5 +1,7 @@
 const router = require('express').Router();
 
+const gamesService = require('../services/gamesService');
+
 const { getErrorMessage } = require('../utils/errorUtils');
 
 router.get('/create', (req, res) => {
@@ -8,6 +10,7 @@ router.get('/create', (req, res) => {
 
 router.post('/create', async (req, res) => {
     const gameData = req.body;
+    gameData.owner = req.user._id;
 
     try {
         await gamesService.create(gameData);
@@ -15,7 +18,7 @@ router.post('/create', async (req, res) => {
     } catch (error) {
         res.render('games/create', { error: getErrorMessage(error) })
     }
-})
+});
 
 
 
