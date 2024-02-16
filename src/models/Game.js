@@ -34,4 +34,8 @@ const gamesSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'User'
     }
-})
+});
+
+const Game = mongoose.model('Game', gamesSchema);
+
+module.exports = Game;
