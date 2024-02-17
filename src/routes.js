@@ -7,6 +7,9 @@ const gamesController = require('./controllers/gamesController');
 router.use(homeController);
 router.use('/auth', authController);
 router.use('/games', gamesController);
+router.get('*', (req,res)=>{
+    res.redirect('/404')
+});
 
 
 
