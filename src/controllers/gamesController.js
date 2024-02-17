@@ -3,13 +3,13 @@ const router = require('express').Router();
 const gamesService = require('../services/gamesService');
 
 const { getErrorMessage } = require('../utils/errorUtils');
-const { isAuth } = require('../middlewares/authMiddleware');
+const { isAuth, isOwner } = require('../middlewares/authMiddleware');
 
 router.get('/create', isAuth, (req, res) => {
     res.render('games/create');
 });
 
-router.post('/create',isAuth, async (req, res) => {
+router.post('/create', isAuth, async (req, res) => {
     const gameData = req.body;
     gameData.owner = req.user._id;
 
@@ -42,7 +42,7 @@ router.get('/:gameId/details', async (req, res) => {
     }
 });
 
-router.get('/:gameId/buy',isAuth, async (req, res) => {
+router.get('/:gameId/buy', isAuth, async (req, res) => {
     try {
         await gamesService.update(req.params.gameId, req.user);
         res.redirect(`/games/${req.params.gameId}/details`);
@@ -51,7 +51,7 @@ router.get('/:gameId/buy',isAuth, async (req, res) => {
     }
 });
 
-router.get('/:gameId/delete',isAuth, async (req, res) => {
+router.get('/:gameId/delete', isAuth, isOwner, async (req, res) => {
     try {
         await gamesService.delete(req.params.gameId);
         res.redirect('/games/catalog');
@@ -61,7 +61,7 @@ router.get('/:gameId/delete',isAuth, async (req, res) => {
     }
 });
 
-router.get('/:gameId/edit',isAuth, async (req, res) => {
+router.get('/:gameId/edit', isAuth, isOwner, async (req, res) => {
     try {
         const game = await gamesService.getOne(req.params.gameId).lean();
         res.render('games/edit', { game })
@@ -70,7 +70,7 @@ router.get('/:gameId/edit',isAuth, async (req, res) => {
     }
 });
 
-router.post('/:gameId/edit',isAuth, async (req, res) => {
+router.post('/:gameId/edit', isAuth, isOwner, async (req, res) => {
     const game = req.body;
 
     try {
