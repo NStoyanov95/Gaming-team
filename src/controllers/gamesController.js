@@ -37,8 +37,16 @@ router.get('/:gameId/details', async (req, res) => {
         const isBuyer = game.boughtBy.some(x => x._id == req.user?._id);
         res.render('games/details', { game, isUser, isOwner, isBuyer });
     } catch (error) {
-        console.log(error.message);
         res.redirect('/404');
+    }
+});
+
+router.get('/:gameId/buy', async(req, res) => {
+    try {
+        await gamesService.update(req.params.gameId, req.user);
+        res.redirect(`/games/${req.params.gameId}/details`);
+    } catch (error) {
+        res.redirect('/404');        
     }
 });
 
