@@ -31,13 +31,20 @@ router.get('/catalog', async (req, res) => {
 
 router.get('/:gameId/details', async (req, res) => {
     try {
-        const game = await gamesService.getOne(req.params.gameId).lean();
-        res.render('games/details', { game });
+        const game = await gamesService.getOne(req.params.gameId).lean().populate('boughtBy');
+        const isUser = req.user;
+        const isOwner = game.owner == req.user?._id;
+        const isBuyer = game.boughtBy.some(x => x._id == req.user?._id);
+        res.render('games/details', { game, isUser, isOwner, isBuyer });
     } catch (error) {
         console.log(error.message);
-        res.redirect('/404')
+        res.redirect('/404');
     }
-})
+});
+
+
+
+
 
 
 
