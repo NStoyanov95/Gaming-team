@@ -7,7 +7,7 @@ exports.auth = async (req, res, next) => {
     const token = req.cookies['auth'];
 
     if (!token) {
-      return next();
+        return next();
     }
 
     try {
@@ -31,7 +31,7 @@ exports.isAuth = (req, res, next) => {
     next();
 };
 
-exports.isOwner = async(req,res,next)=>{
+exports.isOwner = async (req, res, next) => {
     const game = await gamesService.getOne(req.params.gameId);
 
     if (game.owner == req.user?._id) {
@@ -39,4 +39,12 @@ exports.isOwner = async(req,res,next)=>{
     }
 
     return res.redirect('/404');
+};
+
+exports.isGuest = (req, res, next) => {
+    if (req.user) {
+        return res.redirect('/404')
+    }
+
+    return next();
 }
