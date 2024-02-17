@@ -35,7 +35,7 @@ exports.isOwner = async (req, res, next) => {
     const game = await gamesService.getOne(req.params.gameId);
 
     if (game.owner == req.user?._id) {
-        return next()
+        return next();
     }
 
     return res.redirect('/404');

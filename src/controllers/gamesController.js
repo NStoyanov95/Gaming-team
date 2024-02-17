@@ -79,7 +79,16 @@ router.post('/:gameId/edit', isAuth, isOwner, async (req, res) => {
     } catch (error) {
         res.render('games/edit', { error: getErrorMessage(error), game })
     }
-})
+});
+
+router.get('/search', async (req, res) => {
+    try {
+        const games = await gamesService.getAll().lean();
+        res.render('games/search', { games })
+    } catch (error) {
+
+    }
+});
 
 
 
