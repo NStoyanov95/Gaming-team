@@ -41,16 +41,24 @@ router.get('/:gameId/details', async (req, res) => {
     }
 });
 
-router.get('/:gameId/buy', async(req, res) => {
+router.get('/:gameId/buy', async (req, res) => {
     try {
         await gamesService.update(req.params.gameId, req.user);
         res.redirect(`/games/${req.params.gameId}/details`);
     } catch (error) {
-        res.redirect('/404');        
+        res.redirect('/404');
     }
 });
 
-
+router.get('/:gameId/delete', async(req, res) => {
+    try {
+        await gamesService.delete(req.params.gameId);
+        res.redirect('/games/catalog');
+    } catch (error) {
+        res.redirect('/404');
+        
+    }
+})
 
 
 
