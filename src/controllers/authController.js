@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
 });
 
 //Logout
-router.get('/logout', (req, res) => {
+router.get('/logout', isAuth, (req, res) => {
     res.clearCookie('auth');
     res.redirect('/');
 });
