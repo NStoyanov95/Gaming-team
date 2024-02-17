@@ -58,6 +58,15 @@ router.get('/:gameId/delete', async(req, res) => {
         res.redirect('/404');
         
     }
+});
+
+router.get('/:gameId/edit', async(req,res)=>{
+    try {
+        const game = await gamesService.getOne(req.params.gameId).lean();
+        res.render('games/edit', {game})
+    } catch (error) {
+        
+    }
 })
 
 
