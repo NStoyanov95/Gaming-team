@@ -11,3 +11,5 @@ exports.getAll = () => Game.find();
 exports.getOne = (gameId) => Game.findById(gameId);
 
 exports.update = (gameId, userId) => Game.findByIdAndUpdate(gameId, { $push: { 'boughtBy': userId } });
+
+exports.search = (name, platform) => Game.find({ name: new RegExp(name, 'i'), platform: new RegExp(platform, 'i') });

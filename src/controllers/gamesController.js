@@ -86,7 +86,17 @@ router.get('/search', async (req, res) => {
         const games = await gamesService.getAll().lean();
         res.render('games/search', { games })
     } catch (error) {
+        res.redirect('/404')
+    }
+});
 
+router.post('/search', async (req, res) => {
+    const { name, platform } = req.body;
+    try {
+        const games = await gamesService.search(name, platform).lean();
+        res.render('games/search', { games });
+    } catch (error) {
+        res.redirect('/404');
     }
 });
 
