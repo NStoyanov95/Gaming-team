@@ -14,11 +14,20 @@ router.post('/create', async (req, res) => {
 
     try {
         await gamesService.create(gameData);
-        res.redirect('/')
+        res.redirect('/games/catalog');
     } catch (error) {
         res.render('games/create', { error: getErrorMessage(error) })
     }
 });
+
+router.get('/catalog', async (req, res) => {
+    try {
+        const games = await gamesService.getAll().lean();
+        res.render('games/catalog', { games });
+    } catch (error) {
+
+    }
+})
 
 
 
