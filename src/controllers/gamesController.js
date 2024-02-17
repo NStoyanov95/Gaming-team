@@ -50,22 +50,33 @@ router.get('/:gameId/buy', async (req, res) => {
     }
 });
 
-router.get('/:gameId/delete', async(req, res) => {
+router.get('/:gameId/delete', async (req, res) => {
     try {
         await gamesService.delete(req.params.gameId);
         res.redirect('/games/catalog');
     } catch (error) {
         res.redirect('/404');
-        
+
     }
 });
 
-router.get('/:gameId/edit', async(req,res)=>{
+router.get('/:gameId/edit', async (req, res) => {
     try {
         const game = await gamesService.getOne(req.params.gameId).lean();
-        res.render('games/edit', {game})
+        res.render('games/edit', { game })
     } catch (error) {
-        
+
+    }
+});
+
+router.post('/:gameId/edit', async (req, res) => {
+    const game = req.body;
+
+    try {
+        await gamesService.edit(req.params.gameId, game);
+        res.redirect(`/games/${req.params.gameId}/details`);
+    } catch (error) {
+        res.render('games/edit', { error: getErrorMessage(error), game })
     }
 })
 
