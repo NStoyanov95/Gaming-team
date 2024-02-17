@@ -25,7 +25,17 @@ router.get('/catalog', async (req, res) => {
         const games = await gamesService.getAll().lean();
         res.render('games/catalog', { games });
     } catch (error) {
+        res.redirect('/404')
+    }
+});
 
+router.get('/:gameId/details', async (req, res) => {
+    try {
+        const game = await gamesService.getOne(req.params.gameId).lean();
+        res.render('games/details', { game });
+    } catch (error) {
+        console.log(error.message);
+        res.redirect('/404')
     }
 })
 
