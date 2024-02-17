@@ -41,10 +41,20 @@ exports.isOwner = async (req, res, next) => {
     return res.redirect('/404');
 };
 
+exports.isUser = async (req, res, next) => {
+    const game = await gamesService.getOne(req.params.gameId);
+
+    if (game.owner != req.user?._id) {
+        return next()
+    }
+
+    return res.redirect('/404');
+}
+
 exports.isGuest = (req, res, next) => {
     if (req.user) {
         return res.redirect('/404')
     }
 
     return next();
-}
+};

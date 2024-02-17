@@ -3,7 +3,7 @@ const router = require('express').Router();
 const gamesService = require('../services/gamesService');
 
 const { getErrorMessage } = require('../utils/errorUtils');
-const { isAuth, isOwner } = require('../middlewares/authMiddleware');
+const { isAuth, isOwner, isUser } = require('../middlewares/authMiddleware');
 
 router.get('/create', isAuth, (req, res) => {
     res.render('games/create');
@@ -42,7 +42,7 @@ router.get('/:gameId/details', async (req, res) => {
     }
 });
 
-router.get('/:gameId/buy', isAuth, async (req, res) => {
+router.get('/:gameId/buy', isAuth, isUser, async (req, res) => {
     try {
         await gamesService.update(req.params.gameId, req.user);
         res.redirect(`/games/${req.params.gameId}/details`);
